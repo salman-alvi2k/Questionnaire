@@ -12,34 +12,34 @@ const Exit = () => {
   React.useEffect(() => {
     // You can access the feedback data from localStorage or state management
     const saveFeedback = async () => {
-      const rating = localStorage.getItem('rating')
-      const feedback = localStorage.getItem('feedback')
-      
+      const rating = localStorage.getItem("rating");
+      const feedback = localStorage.getItem("feedback");
+
       if (rating && feedback) {
         try {
-          const response = await fetch('/api/feedback', {
-            method: 'POST',
+          const response = await fetch("/api/feedback", {
+            method: "POST",
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
             body: JSON.stringify({ rating, feedback }),
-          })
-          
+          });
+
           if (!response.ok) {
-            throw new Error('Failed to save feedback')
+            throw new Error("Failed to save feedback");
           }
-          
+
           // Clear the stored feedback
-          localStorage.removeItem('rating')
-          localStorage.removeItem('feedback')
+          localStorage.removeItem("rating");
+          localStorage.removeItem("feedback");
         } catch (error) {
-          console.error('Error saving feedback:', error)
+          console.error("Error saving feedback:", error);
         }
       }
-    }
+    };
 
-    saveFeedback()
-  }, [])
+    saveFeedback();
+  }, []);
 
   return (
     <div className="grid grid-cols-2 justify-center items-center h-screen text-white bg-gradient-to-l from-black to-gray-800">
@@ -77,7 +77,7 @@ const Exit = () => {
             <ArrowLeftIcon className="w-5 h-5 mr-2" />
             Back
           </Button>
-          <Button className="bg-white" onClick={() => router.push("/home")}>
+          <Button className="bg-white" onClick={() => router.push("/")}>
             Back to Home
             <ArrowRightIcon className="w-5 h-5 ml-2" />
           </Button>

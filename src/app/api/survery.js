@@ -2,16 +2,16 @@ import { MongoClient } from "mongodb";
 import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
 const connectToDatabase = async () => {
-  const client = await MongoClient.connect(process.env.MONGODB_URI!);
+  const client = await MongoClient.connect(process.env.MONGODB_URI);
   return client;
 };
 
-export default async function handler(req: any, res: any) {
+export default async function handler(req, res) {
   if (req.method === "POST") {
     try {
       const client = await connectToDatabase();

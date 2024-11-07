@@ -70,14 +70,13 @@ const Exit = () => {
         </div>
         <div className="flex justify-between w-full max-w-xs mt-8">
           <Button
-            variant="secondary"
             className="bg-pink-500"
             onClick={() => router.push("/rating")}
           >
             <ArrowLeftIcon className="w-5 h-5 mr-2" />
             Back
           </Button>
-          <Button className="bg-white" onClick={() => router.push("/home")}>
+          <Button className="bg-white" onClick={() => router.push("/page1")}>
             Back to Home
             <ArrowRightIcon className="w-5 h-5 ml-2" />
           </Button>

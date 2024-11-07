@@ -134,11 +134,7 @@ const Rating = () => {
           ))}
 
           <div className="flex justify-between pt-4">
-            <Button
-              onClick={handleBack}
-              variant="secondary"
-              className="bg-pink-500"
-            >
+            <Button onClick={handleBack} className="bg-pink-500">
               <ArrowLeftIcon className="w-5 h-5 mr-2" />
               Back
             </Button>

@@ -26,7 +26,7 @@ const formSchema = z.object({
   email: z.string().email(),
 });
 
-const Home = () => {
+export default function Page1() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -158,6 +158,4 @@ const Home = () => {
       </div>
     </div>
   );
-};
-
-export default Home;
+}

@@ -33,7 +33,7 @@ const Exit = () => {
           localStorage.removeItem("rating");
           localStorage.removeItem("feedback");
         } catch (error) {
-          console.error("Error saving feedback:", error);
+          console.log("Error saving feedback:", error);
         }
       }
     };
@@ -42,7 +42,7 @@ const Exit = () => {
   }, []);
 
   return (
-    <div className="grid grid-cols-2 justify-center items-center h-screen text-white bg-gradient-to-l from-black to-gray-800">
+    <div className="grid grid-cols-1 lg:grid-cols-2 justify-center items-center h-screen text-white bg-gradient-to-l from-black to-gray-800">
       <div className="relative">
         <div
           className="absolute inset-0 left-44 bg-cover bg-center bg-no-repeat opacity-50"
@@ -77,7 +77,7 @@ const Exit = () => {
             <ArrowLeftIcon className="w-5 h-5 mr-2" />
             Back
           </Button>
-          <Button className="bg-white" onClick={() => router.push("/")}>
+          <Button className="bg-white" onClick={() => router.push("/home")}>
             Back to Home
             <ArrowRightIcon className="w-5 h-5 ml-2" />
           </Button>

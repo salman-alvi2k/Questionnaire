@@ -6,7 +6,8 @@ import { Label } from "@/components/Label";
 import { ArrowRightIcon } from "@heroicons/react/16/solid";
 import { ArrowLeftIcon } from "@heroicons/react/16/solid";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { surveyUtils } from "@/app/utils/survey";
 
 const Rating = () => {
   const [ratings, setRatings] = useState({
@@ -23,6 +24,30 @@ const Rating = () => {
 
   const router = useRouter();
 
+  const [userEmail, setUserEmail] = useState<string>("");
+
+  useEffect(() => {
+    const email = localStorage.getItem("surveyUserEmail");
+    if (!email) {
+      router.push("/home");
+      return;
+    }
+    setUserEmail(email);
+
+    const fetchPreviousRatings = async () => {
+      try {
+        const previousData = await surveyUtils.getPreviousSurvey(email);
+        if (previousData?.ratings) {
+          setRatings(previousData.ratings);
+        }
+      } catch {
+        console.log("Error fetching previous ratings");
+      }
+    };
+
+    fetchPreviousRatings();
+  }, [router]);
+
   const handleRatingChange = (aspect: keyof typeof ratings, value: number) => {
     setRatings((prev) => ({
       ...prev,
@@ -34,7 +59,7 @@ const Rating = () => {
     }));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const newErrors = {
       comfort: ratings.comfort === 0,
       looks: ratings.looks === 0,
@@ -44,8 +69,18 @@ const Rating = () => {
     setErrors(newErrors);
 
     if (!Object.values(newErrors).some((error) => error)) {
-      console.log("Submitted ratings:", ratings);
-      router.push("/exit");
+      try {
+        if (!userEmail) return;
+
+        await surveyUtils.completeSurvey(userEmail, {
+          ratings,
+          completedAt: new Date().toISOString(),
+        });
+
+        router.push("/exit");
+      } catch (error) {
+        console.log("Error completing survey:", error);
+      }
     }
   };
 

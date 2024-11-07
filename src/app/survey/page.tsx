@@ -1,21 +1,44 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/Button";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/16/solid";
 import { OptionCard } from "@/components/Card";
 import { useRouter } from "next/navigation";
+import { surveyUtils } from "@/app/utils/survey";
 
 export default function SurveyPage() {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [userEmail, setUserEmail] = useState<string>("");
   const router = useRouter();
 
-  const handleSubmit = () => {
-    router.push("/rating");
+  useEffect(() => {
+    const email = localStorage.getItem("surveyUserEmail");
+    if (!email) {
+      router.push("/home");
+      return;
+    }
+    setUserEmail(email);
+  }, [router]);
+
+  const handleSubmit = async () => {
+    try {
+      if (!userEmail || !selectedOption) return;
+
+      await surveyUtils.updateSurveyProgress(userEmail, {
+        currentStep: 2,
+        shoeChoice: selectedOption,
+        updatedAt: new Date().toISOString(),
+      });
+
+      router.push("/rating");
+    } catch {
+      console.log("Error saving survey progress");
+    }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen  bg-gradient-to-l from-black to-gray-800 p-6">
+    <div className="flex flex-col items-center justify-center min-h-screen  p-6">
       <div className="text-center text-white mb-8">
         <h2 className="text-sm font-semibold text-gray-400">QUESTION 1</h2>
         <h1 className="text-2xl font-bold mt-2">
